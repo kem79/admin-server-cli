@@ -5,7 +5,7 @@ from doublex import assert_that, is_
 from hamcrest import has_key, raises, calling
 from nose2.tools import such
 from pathlib import Path
-from railai_admin_server_cli.model.configuration import Configuration
+from configuration.configuration import Configuration
 
 with such.A("Configuration") as it:
     @it.has_setup

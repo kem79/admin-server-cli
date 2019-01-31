@@ -26,6 +26,12 @@ pipeline {
                     archiveArtifacts artifacts: "**/test-report.html, **/htmlcov/*"
                     deleteDir()
                 }
+                success {
+                    sh("devpi use http://10.62.65.209:4040")
+                    sh("devpi login railai --password=changeme")
+                    sh("devpi use railai/dev")
+                    sh("devpi upload")
+                }
             }
         }
     }

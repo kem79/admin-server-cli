@@ -2,7 +2,7 @@ import json
 import click
 import requests
 
-from railai_admin_server_cli.model.configuration import Configuration
+from configuration.configuration import Configuration
 
 
 @click.group()

@@ -6,10 +6,10 @@ from hamcrest import contains_string
 from nose2.tools import such
 from click.testing import CliRunner
 
-from railai_admin_server_cli.deployment_marker_cli import list_deployment_markers
-from railai_admin_server_cli.deployment_marker_cli import create_deployment_marker
-from railai_admin_server_cli.deployment_marker_cli import delete_deployment_marker
-from railai_admin_server_cli.model.configuration import Configuration
+from deployment_marker.deployment_marker_cli import list_deployment_markers
+from deployment_marker.deployment_marker_cli import create_deployment_marker
+from deployment_marker.deployment_marker_cli import delete_deployment_marker
+from configuration.configuration import Configuration
 
 with such.A("Deployment Marker CLI") as it:
     @it.has_setup

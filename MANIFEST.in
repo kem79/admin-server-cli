@@ -1,0 +1,2 @@
+include nose2.cfg
+include README.md
