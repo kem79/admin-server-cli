@@ -2,7 +2,7 @@ import os
 
 import yaml
 from doublex import assert_that, is_
-from hamcrest import has_key
+from hamcrest import has_key, raises, calling, contains_string
 from nose2.tools import such
 from pathlib import Path
 from railai_admin_server_cli.model.configuration import Configuration
@@ -40,6 +40,14 @@ with such.A("Configuration") as it:
             def teardown():
                 os.remove(it.config_file_path)
 
+        with it.having('get(key)'):
+
+            @it.should('raise a FileNotFound exception.')
+            def test_raise_error_when_conf_file_not_present():
+                assert_that(calling(it.config.get).with_args('url'),
+                            raises(FileNotFoundError,
+                                   'The configuration could not be found. Create your configuration with asconf CLI.'))
+
     with it.having('a configuration file already exists with key \'url\''):
         @it.has_setup
         def setup():
@@ -62,9 +70,24 @@ with such.A("Configuration") as it:
             def test_url_key_is_unaffected():
                 assert_that(it.content['url'], is_('admin-server.cfd.isus.emc.com'))
 
+        with it.having('get(key) on an existing key'):
+
+            @it.should('return the key value')
+            def test_get_existing_key():
+                assert_that(it.config.get('url'), is_('admin-server.cfd.isus.emc.com'))
+
+        with it.having('get(key) on an non existing key'):
+
+            @it.should('return a KeyError exception.')
+            def test_get_existing_key():
+                assert_that(calling(it.config.get).with_args('unknown'),
+                            raises(KeyError,
+                                   'The key is not defined. Create it first with asconf unknown VALUE.'))
+
         @it.has_teardown
         def teardown():
             os.remove(it.config_file_path)
+
 
 it.createTests(globals())
 

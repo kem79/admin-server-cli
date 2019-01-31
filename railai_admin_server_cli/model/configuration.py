@@ -39,3 +39,18 @@ class Configuration:
             with open(self.config_file_path, 'w+') as f:
                 f.write('{}: {}'.format(key, value))
 
+    def get(self, key):
+        """
+        Return a key value from the configuration file.
+        :param key:
+        :return:
+        """
+        if os.path.exists(self.config_file_path):
+            with open(self.config_file_path, 'r+') as f:
+                data_dict = yaml.load(f)
+                try:
+                    return data_dict[key]
+                except KeyError:
+                    raise KeyError('The key is not defined. Create it first with asconf {} VALUE.'.format(key))
+        else:
+            raise FileNotFoundError('The configuration could not be found. Create your configuration with asconf CLI.')
