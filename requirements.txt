@@ -1,0 +1,8 @@
+--trusted-host=10.62.65.209
+--trusted-host=pypi.python.org
+--trusted-host=pypi.org
+--trusted-host=files.pythonhosted.org
+Flask==1.0.2
+gunicorn==19.8.1
+requests==2.18.4
+pyyaml==3.13

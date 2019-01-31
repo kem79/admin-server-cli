@@ -8,9 +8,10 @@ setup(
     description="a simple CLI to interact with railai admin server.",
     packages=['railai_admin_server_cli'],
     install_requires=[
-        'click',
-        'requests',
-        'colorama'
+        'click==6.7',
+        'requests==2.18.4',
+        'colorama==0.4.1',
+        'pyyaml==3.13'
     ],
     entry_points={
         'console_scripts': [
