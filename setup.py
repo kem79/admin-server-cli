@@ -21,7 +21,6 @@ setup(
         'colorama==0.4.1',
         'pyyaml==3.13'
     ],
-    python_requires=">3",
     entry_points={
         'console_scripts': [
             'asdm =     deployment_marker.deployment_marker_cli:cli',
