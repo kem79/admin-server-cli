@@ -1,8 +1,8 @@
-import json
 import click
 import requests
 
 from configuration.configuration import Configuration
+from common.utils import print_response, protocol
 
 
 @click.group()
@@ -22,8 +22,9 @@ def list_deployment_markers(name):
     :param name: the name of the micro-service
     :return: print response
     """
-    url = 'https://{}/api/v1/{}/deployment-marker'.format(Configuration().get('url'),
-                                                          name)
+    url = '{}://{}/api/v1/{}/deployment-marker'.format(protocol(),
+                                                       Configuration().get('url'),
+                                                       name)
     resp = requests.get(url)
     print_response(resp)
 
@@ -47,8 +48,9 @@ def create_deployment_marker(name, version, commit, changelog, description, user
     :param username: the user name
     :return: print response
     """
-    url = 'https://{}/api/v1/{}/deployment-marker'.format(Configuration().get('url'),
-                                                          name)
+    url = '{}://{}/api/v1/{}/deployment-marker'.format(protocol(),
+                                                       Configuration().get('url'),
+                                                       name)
     resp = requests.post(url=url,
                          headers={'content-type': 'application/json'},
                          json={"version": version,
@@ -69,7 +71,8 @@ def delete_deployment_marker(name, deployment_id):
     :param deployment_id: the id of the deployment marker
     :return: print response
     """
-    url = 'https://{url}/api/v1/{name}/deployment-marker/{deployment_id}'.format(
+    url = '{protocol}://{url}/api/v1/{name}/deployment-marker/{deployment_id}'.format(
+        protocol=protocol(),
         url=Configuration().get('url'),
         name=name,
         deployment_id=deployment_id
@@ -77,27 +80,3 @@ def delete_deployment_marker(name, deployment_id):
     resp = requests.delete(url=url)
     print_response(resp)
 
-
-def with_color(status_code):
-    """
-    Define the color of the message
-    :return: a string representing the color
-    """
-    if status_code in range(200, 299):
-        return 'green'
-    elif status_code in range(400, 499):
-        return 'yellow'
-    else:
-        return 'red'
-
-
-def print_response(resp):
-    """
-    Print the
-    :param resp:
-    :return:
-    """
-    click.secho('\n'.join([str(resp.status_code),
-                           json.dumps(resp.json(), indent=2),
-                           ]),
-                fg=with_color(resp.status_code))

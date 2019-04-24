@@ -7,6 +7,7 @@ with the administration server.
 The package provides 2 CLIs:
 + asconf: this client provides commands to configure the client environment information.
 + asdm: this client provides commands to list, create and delete deployment markers.
++ aspb: this client can be used to create, list and delete performance baseline.
 
 ##Installation
 To install the package, run:
@@ -38,4 +39,5 @@ To get more information about the CLIs and their respective commands, use the he
 ```aidl
 asconf --help
 asdm --help
+aspb --help
 ```

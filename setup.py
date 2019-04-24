@@ -25,6 +25,7 @@ setup(
     entry_points={
         'console_scripts': [
             'asdm =     deployment_marker.deployment_marker_cli:cli',
-            'asconf =   configuration.config_cli:cli'
+            'asconf =   configuration.config_cli:cli',
+            'aspb =     performance_baseline.performance_baseline_cli:cli'
         ]}
 )
