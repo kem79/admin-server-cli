@@ -38,11 +38,13 @@ def print_response(resp):
 def poll_task_result(task_id, polling_interval=100):
     get_task_result_url = 'http://{}/api/v1/tasks/{}'.format(Configuration().get('url'),
                                                              task_id)
-    while True:
+    retries = 0
+    while True and retries < 2:
         resp = requests.get(get_task_result_url)
         if resp.json()['status'] != 'PENDING':
             break
         sleep(polling_interval)
+        retries += 1
     return resp
 
 
