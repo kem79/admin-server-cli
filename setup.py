@@ -12,9 +12,7 @@ setup(
     description="a simple CLI to interact with railai admin server.",
     long_description=read('README.md'),
     url='http://10.62.81.24/incubation/railai-admin-server-cli',
-    packages=['configuration',
-              'deployment_marker',
-              'test'],
+    packages=find_packages(),
     install_requires=[
         'click==6.7',
         'requests==2.18.4',
