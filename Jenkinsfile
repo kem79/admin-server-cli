@@ -1,6 +1,11 @@
+import groovy.json.JsonSlurper
 properties properties: [[$class: 'GitLabConnectionProperty', gitLabConnection: 'incubation-railai']]
+
 pipeline {
     agent { label "devpi_client" }
+    environment {
+        JFROG_CREDS = credentials("railai-jfrog-credential")
+    }
     post {
           failure {
             updateGitlabCommitStatus name: 'Upload to Dev index', state: 'failed'
@@ -31,6 +36,24 @@ pipeline {
                     sh("devpi login railai --password=changeme")
                     sh("devpi use railai/dev")
                     sh("devpi upload")
+
+                    script {
+                        try {
+                            def materialJson = readFile "material.json"
+                            println(materialJson)
+                            // Json String to Map
+                            def materialMap = new JsonSlurper().parseText(materialJson)
+                            println(materialMap.version)
+                            env.VERSION = materialMap.version
+                            env.PACKAGE_NAME = materialMap.package_name
+                        }
+                        catch(exc) {
+                            println("ignore this error")
+                        }
+                        sh("python3 setup.py egg_info -b \"\" sdist")
+                        sh("curl -u ${JFROG_CREDS_USR}:${JFROG_CREDS_PSW} -T dist/${PACKAGE_NAME}-${VERSION}.tar.gz https://artifactory.isus.emc.com/artifactory/ACE-python-dev-local/dev/${PACKAGE_NAME}/${PACKAGE_NAME}-${VERSION}.tar.gz")
+                    }
+
                     deleteDir()
                 }
                 failure {

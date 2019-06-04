@@ -1,16 +1,20 @@
 from setuptools import setup, find_packages
-import os
+import json
 
-def read(file_name):
-    return open(os.path.join(os.path.dirname(__file__), file_name)).read()
+
+with open('material.json', 'r') as f:
+    data = json.load(f)
+    package_name = data['package_name'].strip()
+    version = data['version'].strip()
+    long_description = data['long_description'].strip()
 
 setup(
-    name="railai-admin-server-cli",
-    version="0.0.1",
+    name=package_name,
+    version=version,
     author="Marc",
     author_email="marc.marechal@emc.com",
     description="a simple CLI to interact with railai admin server.",
-    long_description=read('README.md'),
+    long_description=long_description,
     url='http://10.62.81.24/incubation/railai-admin-server-cli',
     packages=find_packages(),
     install_requires=[

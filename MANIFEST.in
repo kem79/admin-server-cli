@@ -1,2 +1,3 @@
 include nose2.cfg
 include README.md
+include material.json
