@@ -1,10 +1,10 @@
 import click
 import requests
-from time import sleep
 
 from common.utils import print_response, poll_task_result, protocol
 from configuration.configuration import Configuration
 
+headers = {'accept': 'application/json'}
 
 @click.group()
 def cli():
@@ -41,7 +41,8 @@ def get_performance_baseline(name, number_of_users, hatch_rate):
         number_of_users,
         hatch_rate
     )
-    resp = requests.get(url)
+    resp = requests.get(url,
+                        headers=headers)
     print_response(poll_task_result(resp.json()['data']))
 
 
@@ -61,7 +62,8 @@ def get_all_performance_baselines(name):
         Configuration().get('url'),
         name
     )
-    resp = requests.get(url)
+    resp = requests.get(url,
+                        headers=headers)
     print_response(poll_task_result(resp.json()['data']))
 
 
@@ -90,7 +92,8 @@ def delete_performance_baseline(name, number_of_users, hatch_rate):
     )
     resp = requests.delete(url,
                            json={"number_of_users": number_of_users,
-                                 "hatch_rate": hatch_rate})
+                                 "hatch_rate": hatch_rate},
+                           headers=headers)
     print_response(resp)
 
 
@@ -130,7 +133,8 @@ def create_performance_baseline(name, url, number_of_users, hatch_rate, duration
                                "number_of_users": number_of_users,
                                "hatch_rate": hatch_rate,
                                "locust_file": locust_file_name,
-                               "duration": duration})
+                               "duration": duration},
+                         headers=headers)
     click.secho('Create performance baseline for {}, {} concurrent users with locust file {}'
                 ' ({} users hatch rate, {} seconds)'.format(name,
                                                             number_of_users,
